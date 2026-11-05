@@ -1,0 +1,93 @@
+<!-- ============================================================================
+  paywall.html — reusable Zovo upgrade / paywall modal
+  ----------------------------------------------------------------------------
+  Drop this markup into any extension's popup or options page (or load it as a
+  standalone chrome-extension:// page). It is inert until paywall.js mounts it.
+
+  All extension-specific copy (extName, extKey, pro features list) is supplied
+  at RUNTIME by ZovoPaywall.init(opts) in paywall.js. No build-time placeholder
+  substitution required — the file ships as-is in every extension.
+
+  Requires zovo-base.css + paywall.css. No inline scripts (CSP-safe).
+============================================================================ -->
+<div class="zovo-root zovo-paywall" id="zovo-paywall" role="dialog" aria-modal="true"
+     aria-labelledby="zovo-paywall-title" data-ext-key="" hidden>
+  <div class="zovo-paywall__backdrop" data-paywall-close></div>
+
+  <div class="zovo-paywall__panel" role="document">
+    <button type="button" class="zovo-paywall__x" aria-label="Close" data-paywall-close>&times;</button>
+
+    <!-- Header -->
+    <header class="zovo-paywall__head">
+      <span class="zovo-pro-badge zovo-pro-badge--solid">
+        <svg class="zovo-pro-badge__lock" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd"/>
+        </svg>
+        PRO
+      </span>
+      <h2 class="zovo-paywall__title" id="zovo-paywall-title">Unlock Pro</h2>
+      <p class="zovo-paywall__sub">Unlock this extension's Pro features — one-time $99 lifetime.</p>
+      <!-- Trial countdown — hidden by JS when no trial is active -->
+      <div class="zovo-paywall__trial" id="zovo-trial" role="status" aria-live="polite" hidden>
+        <span class="zovo-paywall__trial-dot"></span>
+        <span id="zovo-trial-text">7-day Pro trial active</span>
+      </div>
+    </header>
+
+    <!-- Free vs Pro comparison -->
+    <div class="zovo-paywall__compare">
+      <section class="zovo-plan" aria-labelledby="zovo-plan-free">
+        <h3 class="zovo-plan__name" id="zovo-plan-free">Free</h3>
+        <div class="zovo-plan__price"><span class="zovo-plan__amount">$0</span></div>
+        <p class="zovo-plan__note">Core features, forever.</p>
+        <ul class="zovo-plan__list" id="zovo-free-features"><!-- filled by JS --></ul>
+      </section>
+
+      <section class="zovo-plan zovo-plan--pro" aria-labelledby="zovo-plan-pro">
+        <span class="zovo-plan__ribbon" id="zovo-best-value">Best value</span>
+        <h3 class="zovo-plan__name" id="zovo-plan-pro">Pro · Lifetime</h3>
+        <div class="zovo-plan__price">
+          <span class="zovo-plan__was" id="zovo-price-was" hidden></span>
+          <span class="zovo-plan__amount" id="zovo-price">$99</span>
+          <span class="zovo-plan__unit">one-time</span>
+        </div>
+        <!-- value reframe: one-time vs recurring competitor cost -->
+        <p class="zovo-plan__reframe" id="zovo-reframe" hidden></p>
+        <p class="zovo-plan__note" id="zovo-price-note">Pay once. Yours forever.</p>
+        <ul class="zovo-plan__list" id="zovo-pro-features"><!-- filled by JS --></ul>
+      </section>
+    </div>
+
+    <!-- Primary CTA (UTM-tagged, wired by JS) -->
+    <a class="zovo-btn zovo-btn--pro zovo-btn--block zovo-paywall__cta" id="zovo-upgrade-cta"
+       href="#" target="_blank" rel="noopener noreferrer">Get Pro — $99 Lifetime</a>
+
+    <!-- Secondary: frictionless no-card trial (the #1 conversion lever) -->
+    <button type="button" class="zovo-btn zovo-btn--ghost zovo-btn--block zovo-paywall__trial-cta"
+            id="zovo-trial-cta" hidden>Start 7-day free trial — no card</button>
+
+    <p class="zovo-paywall__anchor-note" id="zovo-anchor-note"></p>
+    <!-- risk reversal -->
+    <p class="zovo-paywall__guarantee" id="zovo-guarantee" hidden></p>
+
+    <!-- License activation -->
+    <details class="zovo-paywall__activate">
+      <summary>Already have a license key?</summary>
+      <form class="zovo-paywall__key-form" id="zovo-key-form" novalidate>
+        <label class="zovo-label" for="zovo-key-input">Paste your Zovo license key</label>
+        <div class="zovo-paywall__key-row">
+          <input class="zovo-input zovo-mono" id="zovo-key-input" name="licenseKey"
+                 type="text" autocomplete="off" spellcheck="false"
+                 placeholder="ZOVO-XXXX-XXXX-XXXX-XXXX" aria-describedby="zovo-key-status">
+          <button type="submit" class="zovo-btn zovo-btn--primary" id="zovo-key-verify">Verify</button>
+        </div>
+        <p class="zovo-paywall__key-status" id="zovo-key-status" role="status" aria-live="polite"></p>
+      </form>
+    </details>
+
+    <footer class="zovo-footer zovo-paywall__foot">
+      <span>Zovo · zero data collection</span>
+      <a id="zovo-manage-link" href="#" target="_blank" rel="noopener noreferrer">Manage membership &rarr;</a>
+    </footer>
+  </div>
+</div>

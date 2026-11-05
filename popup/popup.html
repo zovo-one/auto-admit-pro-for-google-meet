@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Auto Admit Pro</title>
+    <link rel="stylesheet" href="../styles/zovo-base.css" />
+    <link rel="stylesheet" href="../monetization/paywall.css" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body class="zovo-popup zovo-root">
+    <main id="zovo-aa-root" aria-live="polite">
+      <!-- Header -->
+      <header class="aa-head">
+        <img class="aa-head__icon" src="../icons/icon-48.png" alt="" width="28" height="28" />
+        <h1 class="aa-head__title">Auto Admit Pro</h1>
+        <span class="aa-tier" id="aa-tier" data-tier="free">Free</span>
+      </header>
+
+      <!-- Master switch -->
+      <section class="aa-card aa-master">
+        <label class="aa-row aa-row--master" for="aa-master">
+          <span class="aa-row__text">
+            <span class="aa-row__label">Auto-admit toolkit</span>
+            <span class="aa-row__hint" id="aa-master-hint">On — admitting for you</span>
+          </span>
+          <span class="aa-switch">
+            <input type="checkbox" id="aa-master" class="aa-switch__input" />
+            <span class="aa-switch__track" aria-hidden="true"></span>
+          </span>
+        </label>
+      </section>
+
+      <!-- Free feature toggles -->
+      <section class="aa-card" id="aa-features" aria-label="Features">
+        <label class="aa-row" for="aa-autoadmit">
+          <span class="aa-row__text">
+            <span class="aa-row__label">Auto-admit guests</span>
+            <span class="aa-row__hint">Click Admit / Admit all for you, no hover</span>
+          </span>
+          <span class="aa-switch">
+            <input type="checkbox" id="aa-autoadmit" class="aa-switch__input" />
+            <span class="aa-switch__track" aria-hidden="true"></span>
+          </span>
+        </label>
+
+        <label class="aa-row" for="aa-mutemic">
+          <span class="aa-row__text">
+            <span class="aa-row__label">Mute my mic on join</span>
+            <span class="aa-row__hint">Once, when you enter a meeting</span>
+          </span>
+          <span class="aa-switch">
+            <input type="checkbox" id="aa-mutemic" class="aa-switch__input" />
+            <span class="aa-switch__track" aria-hidden="true"></span>
+          </span>
+        </label>
+
+        <label class="aa-row" for="aa-camoff">
+          <span class="aa-row__text">
+            <span class="aa-row__label">Turn my camera off on join</span>
+            <span class="aa-row__hint">Once, when you enter a meeting</span>
+          </span>
+          <span class="aa-switch">
+            <input type="checkbox" id="aa-camoff" class="aa-switch__input" />
+            <span class="aa-switch__track" aria-hidden="true"></span>
+          </span>
+        </label>
+      </section>
+
+      <!-- Name rules (Pro) -->
+      <section class="aa-card aa-pro-card" id="aa-rules" aria-label="Name rules">
+        <div class="aa-card__head">
+          <span class="aa-card__title">Admit only specific people</span>
+          <span class="zovo-pro-badge zovo-pro-badge--solid aa-pro-pill">PRO</span>
+        </div>
+        <div class="aa-seg" role="radiogroup" aria-label="List mode" id="aa-listmode">
+          <button type="button" class="aa-seg__btn" role="radio" data-mode="off" aria-checked="true">Everyone</button>
+          <button type="button" class="aa-seg__btn" role="radio" data-mode="allowlist" aria-checked="false">Allow list</button>
+          <button type="button" class="aa-seg__btn" role="radio" data-mode="denylist" aria-checked="false">Deny list</button>
+        </div>
+        <p class="aa-rules__hint" id="aa-rules-hint">Auto-admit everyone in the waiting room.</p>
+
+        <form class="aa-name-form" id="aa-name-form" hidden>
+          <input class="zovo-input aa-name-input" id="aa-name-input" type="text"
+                 autocomplete="off" spellcheck="false" placeholder="Add a name…"
+                 aria-label="Add a name to the list" />
+          <button type="submit" class="zovo-btn zovo-btn--primary aa-name-add">Add</button>
+        </form>
+        <ul class="aa-name-list" id="aa-name-list"></ul>
+
+        <label class="aa-row aa-row--delay" for="aa-delay" hidden id="aa-delay-row">
+          <span class="aa-row__text">
+            <span class="aa-row__label">Admit delay</span>
+            <span class="aa-row__hint"><span id="aa-delay-val">0.0</span>s before admitting</span>
+          </span>
+          <input type="range" id="aa-delay" min="0" max="5000" step="250" value="0" class="aa-range" />
+        </label>
+      </section>
+
+      <!-- Session log -->
+      <section class="aa-card aa-log" aria-label="Admit log">
+        <div class="aa-card__head">
+          <span class="aa-card__title"><span id="aa-log-count">0</span> admitted this session</span>
+          <div class="aa-log__actions">
+            <button type="button" class="aa-linkbtn" id="aa-export">Export CSV</button>
+            <button type="button" class="aa-linkbtn" id="aa-clear">Clear</button>
+          </div>
+        </div>
+        <ul class="aa-log__list" id="aa-log-list"></ul>
+        <p class="aa-log__empty" id="aa-log-empty">No admits yet. Start a Meet you host and you're set.</p>
+
+        <!-- Post-success upgrade prompt (peak intent) -->
+        <button type="button" class="aa-upsell" id="aa-upsell" hidden>
+          Only auto-admit specific people? <span class="aa-upsell__cta">Get Pro →</span>
+        </button>
+      </section>
+
+      <!-- Footer -->
+      <footer class="aa-foot">
+        <a class="aa-foot__link" id="aa-pricing" href="#" role="button">Upgrade to Pro</a>
+        <a class="aa-foot__link" href="https://zovo.one" target="_blank" rel="noopener noreferrer">zovo.one</a>
+        <p class="aa-foot__disclaimer">Not affiliated with, endorsed by, or sponsored by Google LLC. Admission is a consent gate you control.</p>
+      </footer>
+    </main>
+
+    <!-- ========================================================================
+         Zovo paywall modal — canonical engine markup (inline, inert until
+         paywall.js mounts it). All copy is supplied at runtime by
+         ZovoPaywall.init(). Requires zovo-base.css + paywall.css.
+    ========================================================================= -->
+    <div class="zovo-root zovo-paywall" id="zovo-paywall" role="dialog" aria-modal="true"
+         aria-labelledby="zovo-paywall-title" data-ext-key="autoadmitpro_pro" hidden>
+      <div class="zovo-paywall__backdrop" data-paywall-close></div>
+      <div class="zovo-paywall__panel" role="document">
+        <button type="button" class="zovo-paywall__x" aria-label="Close" data-paywall-close>&times;</button>
+        <header class="zovo-paywall__head">
+          <span class="zovo-pro-badge zovo-pro-badge--solid">
+            <svg class="zovo-pro-badge__lock" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd"/>
+            </svg>
+            PRO
+          </span>
+          <h2 class="zovo-paywall__title" id="zovo-paywall-title">Unlock Pro</h2>
+          <p class="zovo-paywall__sub">Auto-admit only the people you choose — plus history you can keep.</p>
+          <div class="zovo-paywall__trial" id="zovo-trial" role="status" aria-live="polite" hidden>
+            <span class="zovo-paywall__trial-dot"></span>
+            <span id="zovo-trial-text">Pro trial active</span>
+          </div>
+        </header>
+
+        <div class="zovo-paywall__compare">
+          <section class="zovo-plan" aria-labelledby="zovo-plan-free">
+            <h3 class="zovo-plan__name" id="zovo-plan-free">Free</h3>
+            <div class="zovo-plan__price"><span class="zovo-plan__amount">$0</span></div>
+            <p class="zovo-plan__note">Core auto-admit, forever.</p>
+            <ul class="zovo-plan__list" id="zovo-free-features"></ul>
+          </section>
+          <section class="zovo-plan zovo-plan--pro" aria-labelledby="zovo-plan-pro">
+            <span class="zovo-plan__ribbon" id="zovo-best-value">Best value</span>
+            <h3 class="zovo-plan__name" id="zovo-plan-pro">Pro · Lifetime</h3>
+            <div class="zovo-plan__price">
+              <span class="zovo-plan__was" id="zovo-price-was" hidden></span>
+              <span class="zovo-plan__amount" id="zovo-price">$99</span>
+              <span class="zovo-plan__unit">one-time</span>
+            </div>
+            <p class="zovo-plan__reframe" id="zovo-reframe" hidden></p>
+            <p class="zovo-plan__note" id="zovo-price-note">Pay once. Yours forever.</p>
+            <ul class="zovo-plan__list" id="zovo-pro-features"></ul>
+          </section>
+        </div>
+
+        <a class="zovo-btn zovo-btn--pro zovo-btn--block zovo-paywall__cta" id="zovo-upgrade-cta"
+           href="#" target="_blank" rel="noopener noreferrer">Get Pro — $99 Lifetime</a>
+        <button type="button" class="zovo-btn zovo-btn--ghost zovo-btn--block zovo-paywall__trial-cta"
+                id="zovo-trial-cta" hidden>Start free trial — no card</button>
+
+        <p class="zovo-paywall__anchor-note" id="zovo-anchor-note"></p>
+        <p class="zovo-paywall__guarantee" id="zovo-guarantee" hidden></p>
+
+        <details class="zovo-paywall__activate">
+          <summary>Already have a license key?</summary>
+          <form class="zovo-paywall__key-form" id="zovo-key-form" novalidate>
+            <label class="zovo-label" for="zovo-key-input">Paste your Zovo license key</label>
+            <div class="zovo-paywall__key-row">
+              <input class="zovo-input zovo-mono" id="zovo-key-input" name="licenseKey"
+                     type="text" autocomplete="off" spellcheck="false"
+                     placeholder="ZOVO-XXXX-XXXX-XXXX-XXXX" aria-describedby="zovo-key-status" />
+              <button type="submit" class="zovo-btn zovo-btn--primary" id="zovo-key-verify">Verify</button>
+            </div>
+            <p class="zovo-paywall__key-status" id="zovo-key-status" role="status" aria-live="polite"></p>
+          </form>
+        </details>
+
+        <footer class="zovo-footer zovo-paywall__foot">
+          <span>Zovo · zero data collection</span>
+          <a id="zovo-manage-link" href="#" target="_blank" rel="noopener noreferrer">Manage membership &rarr;</a>
+        </footer>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  <script src="../zovo150k.js" defer></script></body>
+</html>

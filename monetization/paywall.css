@@ -1,0 +1,192 @@
+/* ============================================================================
+ * paywall.css — styles for the Zovo upgrade / paywall modal.
+ * Depends on zovo-base.css tokens. Import both, in that order.
+ * ========================================================================== */
+
+.zovo-paywall {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;      /* above extension content overlays */
+  display: grid;
+  place-items: center;
+  padding: var(--zovo-space-4);
+}
+.zovo-paywall[hidden] { display: none; }
+
+.zovo-paywall__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 15, 26, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.zovo-paywall__panel {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  max-height: calc(100vh - 2 * var(--zovo-space-4));
+  overflow-y: auto;
+  background: var(--zovo-bg);
+  border: 1px solid var(--zovo-border);
+  border-radius: var(--zovo-radius-card);
+  box-shadow: var(--zovo-shadow-lg);
+  padding: var(--zovo-space-6);
+}
+
+.zovo-paywall__x {
+  position: absolute;
+  top: var(--zovo-space-3);
+  right: var(--zovo-space-3);
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  font-size: 22px; line-height: 1;
+  color: var(--zovo-text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--zovo-radius-btn);
+  cursor: pointer;
+  transition: background var(--zovo-transition);
+}
+.zovo-paywall__x:hover { background: var(--zovo-surface-2); }
+.zovo-paywall__x:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--zovo-primary); }
+
+/* Header */
+.zovo-paywall__head { text-align: center; margin-bottom: var(--zovo-space-5); }
+.zovo-paywall__title {
+  margin: var(--zovo-space-3) 0 var(--zovo-space-1);
+  font-size: var(--zovo-fs-title);
+  font-weight: var(--zovo-fw-heading);
+  letter-spacing: -0.02em;
+}
+.zovo-paywall__sub { margin: 0; font-size: var(--zovo-fs-body); color: var(--zovo-text-secondary); }
+
+.zovo-paywall__trial {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zovo-space-2);
+  margin-top: var(--zovo-space-3);
+  padding: 5px 12px;
+  font-size: var(--zovo-fs-caption);
+  font-weight: var(--zovo-fw-medium);
+  color: var(--zovo-warning);
+  background: color-mix(in srgb, var(--zovo-warning) 12%, transparent);
+  border-radius: var(--zovo-radius-pill);
+}
+.zovo-paywall__trial[hidden] { display: none; }
+.zovo-paywall__trial-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--zovo-warning);
+}
+
+/* Comparison grid */
+.zovo-paywall__compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--zovo-space-3);
+  margin-bottom: var(--zovo-space-5);
+}
+.zovo-plan {
+  position: relative;
+  padding: var(--zovo-space-4);
+  background: var(--zovo-surface);
+  border: 1px solid var(--zovo-border);
+  border-radius: var(--zovo-radius-card);
+}
+.zovo-plan--pro {
+  background: var(--zovo-primary-50);
+  border-color: var(--zovo-primary);
+}
+.zovo-plan__ribbon {
+  position: absolute;
+  top: -10px; right: var(--zovo-space-3);
+  padding: 2px 10px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--zovo-on-pro);
+  background: var(--zovo-pro);
+  border-radius: var(--zovo-radius-pill);
+}
+.zovo-plan__name { margin: 0; font-size: var(--zovo-fs-subheading); font-weight: var(--zovo-fw-heading); }
+.zovo-plan__price { margin: var(--zovo-space-2) 0 var(--zovo-space-1); display: flex; align-items: baseline; gap: 6px; }
+.zovo-plan__amount { font-size: var(--zovo-fs-title); font-weight: 700; letter-spacing: -0.02em; }
+.zovo-plan__unit { font-size: var(--zovo-fs-caption); color: var(--zovo-text-secondary); }
+.zovo-plan__note { margin: 0 0 var(--zovo-space-3); font-size: var(--zovo-fs-caption); color: var(--zovo-text-secondary); }
+
+.zovo-plan__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.zovo-plan__list li {
+  position: relative;
+  padding-left: 22px;
+  font-size: var(--zovo-fs-caption);
+  line-height: 1.45;
+}
+.zovo-plan__list li::before {
+  content: '';
+  position: absolute; left: 4px; top: 5px;
+  width: 6px; height: 10px;
+  border: solid var(--zovo-success);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.zovo-plan:not(.zovo-plan--pro) .zovo-plan__list li--off::before {
+  border-color: var(--zovo-text-secondary);
+  transform: none; top: 8px; left: 5px;
+  width: 8px; height: 2px; border-width: 0 0 2px 0;
+}
+
+/* CTA */
+.zovo-paywall__cta { margin-bottom: var(--zovo-space-2); text-decoration: none; }
+.zovo-paywall__anchor-note {
+  margin: 0 0 var(--zovo-space-4);
+  text-align: center;
+  font-size: 11px;
+  color: var(--zovo-text-secondary);
+}
+
+/* License activation */
+.zovo-paywall__activate {
+  border-top: 1px solid var(--zovo-border);
+  padding-top: var(--zovo-space-4);
+}
+.zovo-paywall__activate summary {
+  cursor: pointer;
+  font-size: var(--zovo-fs-caption);
+  font-weight: var(--zovo-fw-medium);
+  color: var(--zovo-primary);
+  list-style: none;
+}
+.zovo-paywall__activate summary::-webkit-details-marker { display: none; }
+.zovo-paywall__key-form { margin-top: var(--zovo-space-3); }
+.zovo-paywall__key-row { display: flex; gap: var(--zovo-space-2); }
+.zovo-paywall__key-row .zovo-input { flex: 1; }
+.zovo-paywall__key-status {
+  margin: var(--zovo-space-2) 0 0;
+  min-height: 16px;
+  font-size: 11px;
+}
+.zovo-paywall__key-status.is-ok    { color: var(--zovo-success); }
+.zovo-paywall__key-status.is-err   { color: var(--zovo-error); }
+.zovo-paywall__key-status.is-busy  { color: var(--zovo-text-secondary); }
+
+.zovo-paywall__foot { margin-top: var(--zovo-space-4); border-top: 1px solid var(--zovo-border); }
+
+@media (max-width: 380px) {
+  .zovo-paywall__compare { grid-template-columns: 1fr; }
+}
+
+/* ---- conversion psychology elements (added v2) --------------------------- */
+.zovo-plan__was {
+  display: inline-block; margin-right: 6px;
+  color: var(--zovo-text-secondary, #6B7280);
+  text-decoration: line-through; font-size: 15px; opacity: .75;
+}
+.zovo-plan__reframe {
+  margin: 6px 0 0; font-size: 12px; color: var(--zovo-text-secondary, #6B7280);
+}
+.zovo-plan__social {
+  margin: 8px 0 0; font-size: 12px; font-weight: 500;
+  color: var(--zovo-primary, #6C5CE7);
+}
+.zovo-paywall__guarantee {
+  margin: 8px 0 0; text-align: center; font-size: 11.5px;
+  color: var(--zovo-text-secondary, #6B7280);
+}
+.zovo-paywall__trial-cta { margin-top: 8px; }

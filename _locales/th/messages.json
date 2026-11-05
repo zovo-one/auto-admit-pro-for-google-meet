@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "Auto Admit Pro for Google Meet",
+    "description": "Extension name shown in the Chrome Web Store and toolbar (<=75 chars)."
+  },
+  "extDesc": {
+    "message": "Automatically admit waiting-room guests in Google Meet — no hovering, no click-babysitting. Not affiliated with Google.",
+    "description": "Store summary shown under the extension name (<=132 chars). Includes the non-affiliation disclaimer."
+  }
+}
